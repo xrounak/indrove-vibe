@@ -1,0 +1,106 @@
+import React, { useEffect, useState } from 'react';
+import { fetchAds } from '../../../services/adService';
+import Card from '../../../components/Card';
+import Button from '../../../components/Button';
+import PostAdForm from './PostAdForm';
+import { useAuth } from '../../../context/AuthContext';
+import Loader from '../../../components/Loader';
+
+const CATEGORIES = [
+  "Tiffin Services", "Assignment Writer", "Canva Poster Artist",
+  "Online Form Filling", "Logo Designing", "Video Editing",
+  "AI Video Generation", "Beatboxing Tutorials", "Invitation Designer",
+  "Academic Tutoring", "Fuel/Puncture SOS", "Resume & Deck Design",
+  "Yoga Instructor", "Choreography Only", "Presentation Preparation"
+];
+
+export default function FreelancerFeed() {
+  const { user } = useAuth();
+  const [ads, setAds] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [filters, setFilters] = useState({ category: '', skill: '' });
+  const [showPost, setShowPost] = useState(false);
+
+  const loadAds = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const data = await fetchAds(filters);
+      setAds(data);
+    } catch (err) {
+      setError('Failed to load ads');
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadAds();
+    // eslint-disable-next-line
+  }, [filters]);
+
+  return (
+    <div className="max-w-4xl mx-auto py-10 px-2 relative">
+      <h1 className="text-3xl font-bold text-primary mb-6">Freelancer Ads</h1>
+      <div className="flex flex-wrap gap-4 mb-6">
+        <select
+          className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text"
+          value={filters.category}
+          onChange={e => setFilters(f => ({ ...f, category: e.target.value }))}
+        >
+          <option value="">All Categories</option>
+          {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+        </select>
+        <select
+          className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text"
+          value={filters.skill}
+          onChange={e => setFilters(f => ({ ...f, skill: e.target.value }))}
+        >
+          <option value="">All Skills</option>
+          {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+        </select>
+        <Button onClick={loadAds} className="px-4 py-2">Refresh</Button>
+      </div>
+      {user && (
+        <Button
+          className="fixed bottom-8 right-8 z-50 bg-primary text-white shadow-lg hover:scale-105"
+          style={{ borderRadius: '9999px', padding: '1.2rem 2.2rem', fontSize: '1.2rem' }}
+          onClick={() => setShowPost(true)}
+        >
+          + Post Your Service
+        </Button>
+      )}
+      {showPost && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+          <div className="relative w-full max-w-xl">
+            <Button className="absolute top-2 right-2 z-10 px-3 py-1" onClick={() => setShowPost(false)}>✕</Button>
+            <PostAdForm onSuccess={() => { setShowPost(false); loadAds(); }} />
+          </div>
+        </div>
+      )}
+      {loading ? (
+        <Loader label="Loading freelancer ads..." />
+      ) : error ? (
+        <div className="text-center text-red-400 mt-16">{error}</div>
+      ) : ads.length === 0 ? (
+        <div className="text-center text-text mt-16">No freelancer ads found.</div>
+      ) : (
+        <div className="grid gap-6">
+          {ads.map(ad => (
+            <Card key={ad.id} className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-primary mb-1">{ad.title}</h2>
+                <div className="text-text mb-1">{ad.description}</div>
+                <div className="text-sm text-text mb-1">Category: {ad.category}</div>
+                <div className="text-sm text-text mb-1">Price: ₹{ad.price}</div>
+                <div className="text-xs text-text mb-1">Skills: {(ad.skills || []).join(', ')}</div>
+                <div className="text-xs text-text mb-1">Location: {ad.location || 'Remote'}</div>
+              </div>
+              {/* Future: Add contact/assign button */}
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+} 

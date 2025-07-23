@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #14b8a6;
+  --background: #0f0f0f;
+  --card: #1f2937;
+  --text: #b5b5b5;
+  --accent: #14b8a6;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s, color 0.3s;
+  padding-top: 60px;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+button {
+  @apply rounded-full font-inter font-semibold focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded;
+}
+
+::selection {
+  background: rgba(20, 184, 166, 0.3);
+  color: white;
+}

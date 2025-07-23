@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+import { useNavigate, NavLink } from 'react-router-dom';
+import styles from './Navbar.module.css';
+import { useAuth } from '../context/AuthContext';
+
+export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
+
+  return (
+    <nav className={styles.navbar}>
+      {/* Left - Hamburger */}
+      <div className={styles.left}>
+        <button
+          className={`${styles.hamburger} ${menuOpen ? styles.hamburgerActive : ''}`}
+          onClick={toggleMenu}
+          aria-label="Toggle mobile menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      {/* Center - Logo */}
+      <div className={styles.center} onClick={() => navigate('/')} role="button" tabIndex={0}>
+        <div className={styles.logoGroup}>
+          <img src="https://i.pravatar.cc/40" className={styles.logo} alt="Logo" />
+        </div>
+      </div>
+
+      {/* Right - Auth/Profile */}
+      <div
+        className={styles.right}
+        onClick={() => navigate(user ? '/profile' : '/auth')}
+        role="button"
+        tabIndex={0}
+      >
+        {user ? (
+          <>
+            <span className={styles.userName}>{user.displayName || user.email || 'User'}</span>
+            <img
+              src={user.photoURL || 'https://i.pravatar.cc/40'}
+              alt="Profile"
+              className={styles.profilePic}
+            />
+          </>
+        ) : (
+          <>
+            <span className={styles.userName}>Login</span>
+            <img
+              src="https://i.pravatar.cc/40"
+              alt="Guest"
+              className={styles.profilePic}
+            />
+          </>
+        )}
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`${styles.mobileMenu} ${menuOpen ? styles.active : ''}`}>
+        <NavLink to="/Dashboard" onClick={closeMenu} className={styles.mobileLink}>Dashboard</NavLink>
+        <NavLink to="/feed/tasks" onClick={closeMenu} className={styles.mobileLink}>Post Task</NavLink>
+        <NavLink to="/feed/freelancers" onClick={closeMenu} className={styles.mobileLink}>Earn</NavLink>
+      </div>
+    </nav>
+  );
+} 

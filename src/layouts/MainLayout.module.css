@@ -1,0 +1,12 @@
+.mainLayout {
+  background: var(--background);
+  min-height: 100vh;
+  padding-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 600px) {
+  .mainLayout {
+    padding-top: 4.5rem;
+  }
+} 

@@ -52,6 +52,8 @@ export default function PostedTasks({ tasks, user, onShowApplicants, onShowDetai
           </div>
         )}
         <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+          {user && user.uid === t.createdBy && t.status === 'open' &&(
+            <>
           <button
             className={styles.tabButton}
             style={{ width: 'auto' }}
@@ -66,6 +68,7 @@ export default function PostedTasks({ tasks, user, onShowApplicants, onShowDetai
             disabled={t.status !== 'open'}
             title={t.status !== 'open' ? 'Only open tasks can be deleted' : ''}
           >Delete</button>
+          </>)}
         </div>
       </Card>
     ))}

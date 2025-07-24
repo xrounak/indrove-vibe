@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { createTask } from '../../../services/taskService';
-import Button from '../../../components/Button';
+// import Button from '../../../components/Button';
 import Loader from '../../../components/Loader';
 import { useAuth } from '../../../context/AuthContext';
+import styles from './PostTaskForm.module.css';
 
 const CATEGORIES = [
   "Tiffin Services", "Assignment Writer", "Canva Poster Artist",
@@ -12,7 +13,7 @@ const CATEGORIES = [
   "Yoga Instructor", "Choreography Only", "Presentation Preparation"
 ];
 
-export default function PostTaskForm({ onSuccess }) {
+export default function PostTaskForm({ onSuccess,setShowPost }) {
   const { user } = useAuth();
   const [form, setForm] = useState({
     title: '',
@@ -48,14 +49,16 @@ export default function PostTaskForm({ onSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-card p-6 rounded-lg border border-primary/20">
-      <h2 className="text-xl font-bold text-primary mb-2">Post a Task</h2>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h2 className={styles.heading}>Post a Task</h2>
+      <button className={styles.closeBtn} onClick={() => setShowPost(false)}>✕</button>
+      <br />
       <input
         name="title"
         value={form.title}
         onChange={handleChange}
         placeholder="Title"
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.input}
         required
       />
       <textarea
@@ -64,7 +67,7 @@ export default function PostTaskForm({ onSuccess }) {
         onChange={handleChange}
         placeholder="Description"
         rows={3}
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.textarea}
         required
       />
       <input
@@ -73,14 +76,14 @@ export default function PostTaskForm({ onSuccess }) {
         value={form.budget}
         onChange={handleChange}
         placeholder="Budget (₹)"
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.input}
         required
       />
       <select
         name="category"
         value={form.category}
         onChange={handleChange}
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text"
+        className={styles.select}
         required
       >
         <option value="">Select Category</option>
@@ -91,9 +94,9 @@ export default function PostTaskForm({ onSuccess }) {
         value={form.location}
         onChange={handleChange}
         placeholder="Location (optional)"
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.input}
       />
-      <label className="flex items-center gap-2 text-text">
+      <label className={styles.checkboxLabel}>
         <input
           type="checkbox"
           name="urgent"
@@ -102,9 +105,9 @@ export default function PostTaskForm({ onSuccess }) {
         />
         Mark as Urgent
       </label>
-      {loading ? <Loader label="Posting your task..." /> : <Button type="submit" className="w-full">Post Task</Button>}
-      {msg && <div className="text-xs text-center text-primary mt-2">{msg}</div>}
-      {error && <div className="text-xs text-center text-red-400 mt-2">{error}</div>}
+      {loading ? <Loader label="Posting your task..." /> : <button type="submit" className={styles.button}>Post Task</button>}
+      {msg && <div className={styles.msg}>{msg}</div>}
+      {error && <div className={styles.error}>{error}</div>}
     </form>
   );
 } 

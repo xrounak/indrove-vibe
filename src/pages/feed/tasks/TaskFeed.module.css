@@ -5,25 +5,96 @@
   position: relative;
   padding-top: 60px;
 }
+.buttonBase {
+  font-size: 0.98rem;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  box-sizing: border-box;
+}
+.refreshBtn {
+  composes: buttonBase;
+  background: #232329;
+  color: #14b8a6;
+  border: 1.2px solid #14b8a6;
+  margin-right: 0.3rem;
+}
+.refreshBtn:hover {
+  background: #14b8a6;
+  color: #18181b;
+}
 .fab {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 1.2rem;
+  right: 1.2rem;
   z-index: 50;
-  background: var(--primary);
-  color: #fff;
+  background: transparent;
+  color: #14b8a6;
+  border: 1.7px solid #14b8a6;
   border-radius: 9999px;
-  box-shadow: 0 4px 16px 0 rgba(20, 184, 166, 0.15);
-  font-size: 1.2rem;
-  padding: 1.2rem 2.2rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
   font-weight: 600;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(20,184,166,0.10);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.18s;
 }
 .fab:hover {
+  background: #14b8a6;
+  color: #18181b;
+  border-color: #20cfcf;
+  box-shadow: 0 4px 16px rgba(20,184,166,0.18);
+  transform: scale(1.04);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 10;
+  background: #e05a5a;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(224,90,90,0.10);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.closeBtn:hover {
+  background: #c0392b;
+  color: #fff;
+}
+.applyBtn {
+  composes: buttonBase;
+  background: #14b8a6;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 0.6rem 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  width: 100%;
+}
+.applyBtn:hover:not(:disabled) {
+  background: #20cfcf;
+  color: #18181b;
+}
+.applyBtn:disabled {
   background: #232329;
-  color: var(--primary);
-  box-shadow: 0 0 16px 2px var(--primary), 0 8px 32px 0 rgba(20, 184, 166, 0.25);
-  transform: scale(1.05);
+  color: #b5b5b5;
+  cursor: not-allowed;
+  border: 1.2px solid #232329;
 }
 .modalOverlay {
   position: fixed;
@@ -33,4 +104,97 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.modalContent {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  max-height: 98vh;
+  background: none;
+  overflow: auto;
+  padding: 0.5rem 0.2rem 1.5rem 0.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+.form {
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+  background: #232329;
+  border-radius: 16px;
+  border: 1.5px solid #14b8a6;
+  margin: 0 auto;
+}
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.select {
+  background: #18181b;
+  border: 1.5px solid #14b8a6;
+  border-radius: 10px;
+  color: #e5e5e5;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  outline: none;
+  min-width: 160px;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  appearance: none;
+  box-shadow: none;
+}
+.select:focus {
+  border-color: #20cfcf;
+  box-shadow: 0 0 0 2px #14b8a6;
+}
+.select option {
+  background: #232329;
+  color: #e5e5e5;
+}
+@media (max-width: 600px) {
+  .filterRow {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .select {
+    min-width: 0;
+    width: 100%;
+    font-size: 0.98rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .fab {
+    font-size: 0.92rem;
+    padding: 0.5rem 0.8rem;
+    bottom: 0.7rem;
+    right: 0.7rem;
+  }
+  .refreshBtn, .applyBtn, .closeBtn {
+    font-size: 0.92rem;
+    padding: 0.4rem 0.7rem;
+  }
+}
+@media (max-width: 500px) {
+  .modalContent {
+    max-width: 100vw;
+    max-height: 100vh;
+    padding: 0.2rem 0.1rem 1.2rem 0.1rem;
+  }
+  .form {
+    gap: 1.1rem;
+    padding: 0.7rem 0.1rem 1.1rem 0.1rem;
+  }
+  .closeBtn {
+    top: 0.3rem;
+    right: 0.3rem;
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 1.05rem;
+  }
 } 

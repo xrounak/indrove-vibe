@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { createAd } from '../../../services/adService';
-import Button from '../../../components/Button';
+// import Button from '../../../components/Button';
 import Loader from '../../../components/Loader';
 import { useAuth } from '../../../context/AuthContext';
+import styles from './PostAdForm.module.css';
 
 const CATEGORIES = [
   "Tiffin Services", "Assignment Writer", "Canva Poster Artist",
@@ -12,7 +13,7 @@ const CATEGORIES = [
   "Yoga Instructor", "Choreography Only", "Presentation Preparation"
 ];
 
-export default function PostAdForm({ onSuccess }) {
+export default function PostAdForm({ onSuccess,setShowPost }) {
   const { user } = useAuth();
   const [form, setForm] = useState({
     title: '',
@@ -57,14 +58,16 @@ export default function PostAdForm({ onSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-card rounded-2xl shadow-lg p-8 flex flex-col gap-4 max-w-lg mx-auto">
-      <h2 className="text-xl font-bold text-primary mb-2">Post Your Service</h2>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h2 className={styles.heading}>Post Your Service</h2>
+      <button className={styles.closeBtn} onClick={() => setShowPost(false)}>✕</button>
+      <br />
       <input
         name="title"
         value={form.title}
         onChange={handleChange}
         placeholder="Title"
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.input}
         required
       />
       <textarea
@@ -73,7 +76,7 @@ export default function PostAdForm({ onSuccess }) {
         onChange={handleChange}
         placeholder="Description"
         rows={3}
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.textarea}
         required
       />
       <input
@@ -82,14 +85,14 @@ export default function PostAdForm({ onSuccess }) {
         value={form.price}
         onChange={handleChange}
         placeholder="Price (₹)"
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.input}
         required
       />
       <select
         name="category"
         value={form.category}
         onChange={handleChange}
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text"
+        className={styles.select}
         required
       >
         <option value="">Select Category</option>
@@ -100,16 +103,16 @@ export default function PostAdForm({ onSuccess }) {
         value={form.location}
         onChange={handleChange}
         placeholder="Location (optional)"
-        className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary"
+        className={styles.input}
       />
       <div>
-        <label className="block text-text mb-1 font-semibold">Skills</label>
-        <div className="flex flex-wrap gap-2">
+        <label className={styles.skillLabel}>Skills</label>
+        <div className={styles.skillGroup}>
           {CATEGORIES.map(skill => (
             <button
               type="button"
               key={skill}
-              className={`px-3 py-1 rounded-full border text-xs ${form.skills.includes(skill) ? 'bg-primary text-white border-primary' : 'bg-background text-text border-primary/30'}`}
+              className={form.skills.includes(skill) ? styles.skillActive : styles.skill}
               onClick={() => handleSkillToggle(skill)}
             >
               {skill}
@@ -117,9 +120,9 @@ export default function PostAdForm({ onSuccess }) {
           ))}
         </div>
       </div>
-      {loading ? <Loader label="Posting your ad..." /> : <Button type="submit" className="w-full">Post Service</Button>}
-      {msg && <div className="text-xs text-center text-primary mt-2">{msg}</div>}
-      {error && <div className="text-xs text-center text-red-400 mt-2">{error}</div>}
+      {loading ? <Loader label="Posting your ad..." /> : <button type="submit" className={styles.button}>Post Service</button>}
+      {msg && <div className={styles.msg}>{msg}</div>}
+      {error && <div className={styles.error}>{error}</div>}
     </form>
   );
 } 

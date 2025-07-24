@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { fetchOpenTasks, applyToTask } from '../../../services/taskService';
 import { useAuth } from '../../../context/AuthContext';
 import Card from '../../../components/Card';
-import Button from '../../../components/Button';
+// import Button from '../../../components/Button';
 import PostTaskForm from './PostTaskForm';
 import Loader from '../../../components/Loader';
+import styles from './TaskFeed.module.css';
 
 const CATEGORIES = [
   "Tiffin Services", "Assignment Writer", "Canva Poster Artist",
@@ -53,11 +54,11 @@ export default function TaskFeed() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-2 relative">
-      <h1 className="text-3xl font-bold text-primary mb-6">Open Tasks</h1>
-      <div className="flex flex-wrap gap-4 mb-6">
+    <div className={styles.feedContainer}>
+      <h1 className={styles.heading}>Open Tasks</h1>
+      <div className={styles.filterRow}>
         <select
-          className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text"
+          className={styles.select}
           value={filters.category}
           onChange={e => setFilters(f => ({ ...f, category: e.target.value }))}
         >
@@ -67,18 +68,18 @@ export default function TaskFeed() {
         <input
           type="number"
           placeholder="Min Budget"
-          className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text w-32"
+          className={styles.input}
           value={filters.minBudget}
           onChange={e => setFilters(f => ({ ...f, minBudget: e.target.value }))}
         />
         <input
           type="number"
           placeholder="Max Budget"
-          className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text w-32"
+          className={styles.input}
           value={filters.maxBudget}
           onChange={e => setFilters(f => ({ ...f, maxBudget: e.target.value }))}
         />
-        <label className="flex items-center gap-2 text-text">
+        <label className={styles.checkboxLabel}>
           <input
             type="checkbox"
             checked={!!filters.urgent}
@@ -86,54 +87,53 @@ export default function TaskFeed() {
           />
           Urgent
         </label>
-        <Button onClick={loadTasks} className="px-4 py-2">Refresh</Button>
+        <button onClick={loadTasks} className={styles.refreshBtn}>Refresh</button>
       </div>
       {user && (
-        <Button
-          className="fixed bottom-8 right-8 z-50 bg-primary text-white shadow-lg hover:scale-105"
-          style={{ borderRadius: '9999px', padding: '1.2rem 2.2rem', fontSize: '1.2rem' }}
+        <button
+          className={styles.fab}
           onClick={() => setShowPost(true)}
         >
           + Post a Task
-        </Button>
+        </button>
       )}
       {showPost && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
-          <div className="relative w-full max-w-xl">
-            <Button className="absolute top-2 right-2 z-10 px-3 py-1" onClick={() => setShowPost(false)}>✕</Button>
-            <PostTaskForm onSuccess={() => { setShowPost(false); loadTasks(); }} />
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+<PostTaskForm onSuccess={() => { setShowPost(false); loadTasks(); }} setShowPost={setShowPost} />
           </div>
         </div>
       )}
       {loading ? (
         <Loader label="Loading open tasks..." />
       ) : error ? (
-        <div className="text-center text-red-400 mt-16">{error}</div>
+        <div className={styles.error}>{error}</div>
       ) : tasks.length === 0 ? (
-        <div className="text-center text-text mt-16">No open tasks found.</div>
+        <div className={styles.empty}>No open tasks found.</div>
       ) : (
-        <div className="grid gap-6">
+        <div className={styles.grid}>
           {tasks.map(task => (
-            <Card key={task.id} className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+            <Card key={task.id} className={styles.card}>
               <div>
-                <h2 className="text-xl font-bold text-primary mb-1">{task.title}</h2>
-                <div className="text-text mb-1">{task.description}</div>
-                <div className="text-sm text-text mb-1">Category: {task.category}</div>
-                <div className="text-sm text-text mb-1">Budget: ₹{task.budget}</div>
-                {task.urgent && <span className="inline-block text-xs bg-red-500 text-white px-2 py-1 rounded-full mr-2">🔥 Urgent</span>}
-                <span className="text-xs text-text">Applicants: {task.applicants?.length || 0}</span>
+                <h2 className={styles.title}>{task.title}</h2>
+                <div className={styles.text}>{task.description}</div>
+                <div className={styles.meta}>Category: {task.category}</div>
+                <div className={styles.meta}>Budget: ₹{task.budget}</div>
+                {task.urgent && <span className={styles.urgent}>🔥 Urgent</span>}
+                <span className={styles.meta}>Applicants: {task.applicants?.length || 0}</span>
               </div>
-              <div className="flex flex-col gap-2 min-w-[120px]">
-                <Button
+              <div className={styles.cardActions}>
+                
+              {user && user.uid !== task.createdBy &&(<button
+                
                   disabled={!user || (task.applicants || []).includes(user.uid) || applying === task.id}
-                  loading={applying === task.id}
                   onClick={() => handleApply(task.id)}
-                  className="w-full"
+                  className={styles.applyBtn}
                 >
                   {(task.applicants || []).includes(user?.uid)
                     ? 'Applied'
                     : 'Apply'}
-                </Button>
+                </button>)}
               </div>
             </Card>
           ))}

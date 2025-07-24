@@ -8,6 +8,7 @@ import TaskFeed from './pages/feed/tasks';
 import FreelancerFeed from './pages/feed/freelancers';
 import Dashboard from './pages/dashboard';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import ReportBugButton from './components/ReportBugButton';
 
 function Placeholder({ label }) {
   return <div className="text-center text-2xl text-primary mt-32">{label} (Coming Soon)</div>;
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/home" />} />
           </Routes>
         </MainLayout>
+        <ReportBugButton />
       </Router>
     </AuthProvider>
   );

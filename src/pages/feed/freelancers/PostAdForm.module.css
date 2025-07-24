@@ -1,0 +1,153 @@
+.form {
+  background: #232329;
+  border-radius: 16px;
+  border: 1.5px solid #14b8a6;
+  padding: 2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 480px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  margin-top: 60px;
+  width: 100%;
+}
+.heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+.input, .select {
+  background: #18181b;
+  border: 1.5px solid #14b8a6;
+  border-radius: 10px;
+  color: #e5e5e5;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.input:focus, .select:focus {
+  border-color: #20cfcf;
+}
+.textarea {
+  background: #18181b;
+  border: 1.5px solid #14b8a6;
+  border-radius: 10px;
+  color: #e5e5e5;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.textarea:focus {
+  border-color: #20cfcf;
+}
+.skillLabel {
+  color: #b5b5b5;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.skillGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.skill {
+  background: #18181b;
+  border: 1.5px solid #14b8a6;
+  color: #b5b5b5;
+  border-radius: 999px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.skill:hover {
+  background: #14b8a6;
+  color: #18181b;
+  border-color: #20cfcf;
+}
+.skillActive {
+  background: #14b8a6;
+  color: #fff;
+  border-color: #20cfcf;
+}
+.button {
+  background: #14b8a6;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.18s;
+}
+.button:hover {
+  background: #20cfcf;
+  color: #18181b;
+}
+
+.buttonBase {
+font-size: 0.98rem;
+padding: 0.5rem 1rem;
+border-radius: 7px;
+font-weight: 500;
+border: none;
+outline: none;
+cursor: pointer;
+transition: background 0.18s, color 0.18s, border-color 0.18s;
+box-sizing: border-box;
+}
+
+.closeBtn {
+    composes: buttonBase;
+    position: relative;
+    top: -3rem;
+    right: -13.3rem;
+    z-index: 10;
+    background: #232329;
+    color: #e05a5a;
+    border: 1.5px solid #e05a5a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.2rem 0.7rem;
+    width: 20%;
+  }
+  .closeBtn:hover {
+    background: #e05a5a;
+    color: #fff;
+  }
+
+.msg {
+  color: #14b8a6;
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+.error {
+  color: #e05a5a;
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+@media (max-width: 500px) {
+  .form {
+    padding: 1.2rem 0.5rem;
+  }
+  .input, .select, .textarea {
+    font-size: 0.98rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .skill {
+    font-size: 0.92rem;
+    padding: 0.35rem 0.8rem;
+  }
+} 

@@ -1,5 +1,5 @@
 .button {
-  width: 100%;
+  width: auto;
   font-size: 1rem;
   padding: 0.85rem 1.2rem;
   background: var(--primary);
@@ -13,6 +13,7 @@
   filter: drop-shadow(0 0 0 var(--primary));
   cursor: pointer;
   min-height: 44px;
+  margin: 1rem;
 }
 .button:hover, .button:focus {
   background: #232329;

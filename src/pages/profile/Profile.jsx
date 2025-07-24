@@ -14,7 +14,7 @@ const CATEGORIES = [
 ];
 
 export default function Profile() {
-  const { user, emailVerified, sendVerificationEmailToUser, loading: authLoading } = useAuth();
+  const { user, emailVerified, sendVerificationEmailToUser, loading: authLoading, logout } = useAuth();
   const [profile, setProfile] = useState(null);
   const [edit, setEdit] = useState(false);
   const [msg, setMsg] = useState('');
@@ -195,6 +195,7 @@ export default function Profile() {
           )}
         </>
       )}
+      <Button type="button" className={styles.input} onClick={logout} style={{marginTop: '1.5rem'}}>Logout</Button>
       {msg && <div className={styles.msg}>{msg}</div>}
       {error && <div className={styles.error}>{error}</div>}
     </div>

@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import { getUserProfileFromFirestore, updateUserProfileInFirestore } from '../../services/authService';
+import styles from './Profile.module.css';
 
 const CATEGORIES = [
   "Tiffin Services", "Assignment Writer", "Canva Poster Artist",
@@ -77,23 +78,21 @@ export default function Profile() {
   };
 
   if (authLoading || loading) return <Loader label="Loading profile..." />;
-  if (!user) return <div className="text-center text-primary mt-32">Not logged in</div>;
-  if (!profile) return <div className="text-center text-primary mt-32">No profile found</div>;
+  if (!user) return <div className={styles.msg}>Not logged in</div>;
+  if (!profile) return <div className={styles.msg}>No profile found</div>;
 
   return (
-    <div className="max-w-lg mx-auto mt-12 bg-card rounded-2xl shadow-lg p-8 flex flex-col items-center">
-      <div className="mb-6">
-        <img
-          src={profile.avatarURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || user.email)}&background=14b8a6&color=fff`}
-          alt="avatar"
-          className="w-24 h-24 rounded-full border-4 border-primary object-cover shadow"
-        />
-      </div>
+    <div className={styles.container}>
+      <img
+        src={profile.avatarURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || user.email)}&background=14b8a6&color=fff`}
+        alt="avatar"
+        className={styles.avatar}
+      />
       {edit ? (
-        <form onSubmit={handleSave} className="flex flex-col gap-4 w-full items-center">
+        <form onSubmit={handleSave} className={styles.form}>
           <input
             type="text"
-            className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary w-full"
+            className={styles.input}
             name="name"
             value={profile.name}
             onChange={handleChange}
@@ -102,28 +101,28 @@ export default function Profile() {
           />
           <input
             type="url"
-            className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary w-full"
+            className={styles.input}
             name="avatarURL"
             value={profile.avatarURL}
             onChange={handleChange}
             placeholder="Avatar URL (optional)"
           />
           <textarea
-            className="bg-background border border-primary/30 rounded-lg px-4 py-2 text-text focus:outline-none focus:ring-2 focus:ring-primary w-full"
+            className={styles.textarea}
             name="bio"
             value={profile.bio}
             onChange={handleChange}
             placeholder="Bio"
             rows={3}
           />
-          <div className="w-full">
-            <label className="block text-text mb-1 font-semibold">Skills</label>
-            <div className="flex flex-wrap gap-2">
+          <div className={styles.flexRow}>
+            <label className={styles.label}>Skills</label>
+            <div className={styles.chipGroup}>
               {CATEGORIES.map(cat => (
                 <button
                   type="button"
                   key={cat}
-                  className={`px-3 py-1 rounded-full border text-xs ${profile.skills?.includes(cat) ? 'bg-primary text-white border-primary' : 'bg-background text-text border-primary/30'}`}
+                  className={`${styles.chip} ${profile.skills?.includes(cat) ? styles.chipActive : ''}`}
                   onClick={() => handleArrayChange('skills', cat)}
                 >
                   {cat}
@@ -131,14 +130,14 @@ export default function Profile() {
               ))}
             </div>
           </div>
-          <div className="w-full">
-            <label className="block text-text mb-1 font-semibold">Offering</label>
-            <div className="flex flex-wrap gap-2">
+          <div className={styles.flexRow}>
+            <label className={styles.label}>Offering</label>
+            <div className={styles.chipGroup}>
               {CATEGORIES.map(cat => (
                 <button
                   type="button"
                   key={cat}
-                  className={`px-3 py-1 rounded-full border text-xs ${profile.offering?.includes(cat) ? 'bg-primary text-white border-primary' : 'bg-background text-text border-primary/30'}`}
+                  className={`${styles.chip} ${profile.offering?.includes(cat) ? styles.chipActive : ''}`}
                   onClick={() => handleArrayChange('offering', cat)}
                 >
                   {cat}
@@ -146,14 +145,14 @@ export default function Profile() {
               ))}
             </div>
           </div>
-          <div className="w-full">
-            <label className="block text-text mb-1 font-semibold">Looking For</label>
-            <div className="flex flex-wrap gap-2">
+          <div className={styles.flexRow}>
+            <label className={styles.label}>Looking For</label>
+            <div className={styles.chipGroup}>
               {CATEGORIES.map(cat => (
                 <button
                   type="button"
                   key={cat}
-                  className={`px-3 py-1 rounded-full border text-xs ${profile.lookingFor?.includes(cat) ? 'bg-primary text-white border-primary' : 'bg-background text-text border-primary/30'}`}
+                  className={`${styles.chip} ${profile.lookingFor?.includes(cat) ? styles.chipActive : ''}`}
                   onClick={() => handleArrayChange('lookingFor', cat)}
                 >
                   {cat}
@@ -161,43 +160,45 @@ export default function Profile() {
               ))}
             </div>
           </div>
-          <div className="flex gap-2 w-full">
-            <Button type="submit" loading={loading} className="w-full">Save</Button>
-            <Button type="button" className="w-full bg-background text-primary border border-primary/40" onClick={() => setEdit(false)}>Cancel</Button>
+          <div className={styles.flexRow}>
+            <Button type="submit" loading={loading} className={styles.input}>Save</Button>
+            <Button type="button" className={styles.input} onClick={() => setEdit(false)}>Cancel</Button>
           </div>
         </form>
       ) : (
         <>
-          <h2 className="text-2xl font-bold text-primary mb-1">{profile.name || 'No Name'}</h2>
-          <div className="text-text mb-2">{profile.email}</div>
-          <div className="mb-2 text-text text-sm">{profile.bio}</div>
-          <div className="mb-2">
-            <span className="font-semibold text-text">Skills: </span>
+          <h2 className={styles.title}>{profile.name || 'No Name'}</h2>
+          <div className={styles.subtitle}>{profile.email}</div>
+          <div className={styles.subtitle}>{profile.bio}</div>
+          <div className={styles.subtitle}>
+            <span className={styles.label}>Skills: </span>
             {profile.skills?.length ? profile.skills.join(', ') : 'None'}
           </div>
-          <div className="mb-2">
-            <span className="font-semibold text-text">Offering: </span>
+          <div className={styles.subtitle}>
+            <span className={styles.label}>Offering: </span>
             {profile.offering?.length ? profile.offering.join(', ') : 'None'}
           </div>
-          <div className="mb-2">
-            <span className="font-semibold text-text">Looking For: </span>
+          <div className={styles.subtitle}>
+            <span className={styles.label}>Looking For: </span>
             {profile.lookingFor?.length ? profile.lookingFor.join(', ') : 'None'}
           </div>
-          <div className="mb-4">
+          <div className={styles.subtitle}>
             {emailVerified ? (
-              <span className="text-green-400 font-semibold">Email Verified</span>
+              <span className={styles.verified}>Email Verified</span>
             ) : (
-              <span className="text-yellow-400 font-semibold">Email Not Verified</span>
+              <span className={styles.notVerified}>Email Not Verified</span>
             )}
           </div>
-          <Button type="button" className="mb-2 w-full" onClick={() => setEdit(true)}>Edit Profile</Button>
+          <Button type="button" className={styles.input} onClick={() => setEdit(true)}>Edit Profile</Button>
           {!emailVerified && (
-            <Button type="button" className="w-full bg-background text-primary border border-primary/40" onClick={handleVerify}>Resend Verification Email</Button>
+            <Button type="button" className={styles.input} onClick={handleVerify}>Resend Verification Email</Button>
           )}
         </>
       )}
-      {msg && <div className="text-xs text-center text-primary mt-3">{msg}</div>}
-      {error && <div className="text-xs text-center text-red-400 mt-3">{error}</div>}
+      {msg && <div className={styles.msg}>{msg}</div>}
+      {error && <div className={styles.error}>{error}</div>}
     </div>
   );
 } 
+
+

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Dashboard.module.css';
 import { useAuth } from '../../context/AuthContext';
-import { fetchOpenTasks, assignTask, submitWork, markTaskCompleted, addTaskFeedback, fetchalltasks, fetchallads, editTask, deleteTask } from '../../services/taskService';
+import useTasks from '../../hooks/useTasks';
 import { fetchAds, editAd, deleteAd } from '../../services/adService';
 import Card from '../../components/Card';
 import PostedTasks from './PostedTasks/PostedTasks';
@@ -9,6 +9,9 @@ import Applications from './Applications/Applications';
 import AssignedToMe from './AssignedToMe/AssignedToMe';
 import MyAds from './MyAds/MyAds';
 import Loader from '../../components/Loader';
+import ApplicantsModal from '../../components/Modal/ApplicantsModal';
+import ProfileModal from '../../components/Modal/ProfileModal';
+import ConfirmModal from '../../components/Modal/ConfirmModal';
 
 const TABS = [
   { key: 'posted', label: 'My Posted Tasks' },
@@ -53,10 +56,20 @@ function FeedbackForm({ onSubmit, loading }) {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const {
+    tasks,
+    loading,
+    error,
+    loadAllTasks,
+    assign,
+    submit,
+    markCompleted,
+    addFeedback,
+    edit,
+    remove
+  } = useTasks();
   const [tab, setTab] = useState('posted');
-  const [tasks, setTasks] = useState([]);
   const [ads, setAds] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [showApplicants, setShowApplicants] = useState(null); // taskId or null
   const [assigning, setAssigning] = useState('');
   const [submitting, setSubmitting] = useState('');
@@ -64,72 +77,60 @@ export default function Dashboard() {
   const [completing, setCompleting] = useState('');
   const [feedbacking, setFeedbacking] = useState('');
   const [showDetail, setShowDetail] = useState(null); // { type: 'task'|'ad', data: object }
+  const [showApplicantProfile, setShowApplicantProfile] = useState(null); // uid or null
+  const [showProfileUid, setShowProfileUid] = useState(null);
 
   useEffect(() => {
     if (!user) return;
-    setLoading(true);
-    Promise.all([
-      fetchalltasks(),
-      fetchallads(),
-    ]).then(([allTasks, allAds]) => {
-      setTasks(allTasks);
-      setAds(allAds);
-      setLoading(false);
-    });
-  }, [user]);
+    loadAllTasks();
+  }, [user, loadAllTasks]);
 
   const handleAssign = async (taskId, freelancerUid) => {
     setAssigning(freelancerUid);
-    await assignTask(taskId, freelancerUid);
-    const allTasks = await fetchOpenTasks();
-    setTasks(allTasks);
+    await assign(taskId, freelancerUid);
+    loadAllTasks();
     setShowApplicants(null);
     setAssigning('');
   };
 
   const handleSubmitWork = async (taskId) => {
     setSubmitting(taskId);
-    await submitWork(taskId, { text: submissionText });
-    const allTasks = await fetchOpenTasks();
-    setTasks(allTasks);
+    await submit(taskId, { text: submissionText });
+    loadAllTasks();
     setSubmissionText('');
     setSubmitting('');
   };
 
   const handleMarkCompleted = async (taskId) => {
     setCompleting(taskId);
-    await markTaskCompleted(taskId);
-    const allTasks = await fetchOpenTasks();
-    setTasks(allTasks);
+    await markCompleted(taskId);
+    loadAllTasks();
     setCompleting('');
   };
 
   const handleFeedback = async (taskId, rating, comment) => {
     setFeedbacking(taskId);
-    await addTaskFeedback(taskId, { rating, comment });
-    const allTasks = await fetchOpenTasks();
-    setTasks(allTasks);
+    await addFeedback(taskId, { rating, comment });
+    loadAllTasks();
     setFeedbacking('');
   };
 
   const handleEditTask = async (taskId, updates) => {
-    await editTask(taskId, updates);
-    const allTasks = await fetchalltasks();
-    setTasks(allTasks);
+    await edit(taskId, updates);
+    loadAllTasks();
   };
   const handleDeleteTask = async (taskId) => {
-    await deleteTask(taskId);
-    const allTasks = await fetchalltasks();
-    setTasks(allTasks);
+    await remove(taskId);
+    loadAllTasks();
   };
   const handleEditAd = async (adId, updates) => {
     await editAd(adId, updates);
-    const allAds = await fetchallads();
+    const allAds = await fetchAds(); // Assuming fetchAds is part of adService
     setAds(allAds);
   };
   const handleDeleteAd = async (adId) => {
     await deleteAd(adId);
-    const allAds = await fetchallads();
+    const allAds = await fetchAds(); // Assuming fetchAds is part of adService
     setAds(allAds);
   };
 
@@ -187,29 +188,26 @@ export default function Dashboard() {
   if (showApplicants) {
     const task = tasks.find(t => t.id === showApplicants);
     applicantsModal = (
-      <div className={styles.modalOverlay} onClick={() => setShowApplicants(null)}>
-        <div className={styles.modal} onClick={e => e.stopPropagation()}>
-          <h3>Applicants</h3>
-          {task && task.applicants && task.applicants.length ? (
-            <ul style={{ padding: 0, listStyle: 'none' }}>
-              {task.applicants.map(uid => (
-                <li key={uid} style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span>{uid}</span>
-                  <button
-                    className={styles.tabButton}
-                    style={{ width: 'auto', marginLeft: 8 }}
-                    disabled={assigning === uid || task.assignedTo === uid}
-                    onClick={() => handleAssign(task.id, uid)}
-                  >
-                    {task.assignedTo === uid ? 'Assigned' : assigning === uid ? 'Assigning...' : 'Assign'}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : <div>No applicants yet.</div>}
-          <button className={styles.tabButton} style={{ width: '100%', marginTop: 16 }} onClick={() => setShowApplicants(null)}>Close</button>
-        </div>
-      </div>
+      <ApplicantsModal
+        open={!!showApplicants}
+        onClose={() => setShowApplicants(null)}
+        applicants={task && task.applicants}
+        assignedTo={task && task.assignedTo}
+        assigning={assigning}
+        onAssign={uid => handleAssign(task.id, uid)}
+        onViewProfile={setShowApplicantProfile}
+      />
+    );
+  }
+  // Applicant Profile Modal
+  let applicantProfileModal = null;
+  if (showApplicantProfile) {
+    applicantProfileModal = (
+      <ProfileModal
+        open={!!showApplicantProfile}
+        onClose={() => setShowApplicantProfile(null)}
+        uid={showApplicantProfile}
+      />
     );
   }
 
@@ -229,9 +227,30 @@ export default function Dashboard() {
               <div className={styles.detailLabel}>Status</div>
               <div className={styles.detailValue}>{d.status}</div>
               <div className={styles.detailLabel}>Applicants</div>
-              <div className={styles.detailValue}>{(d.applicants || []).join(', ') || 'None'}</div>
+              <div className={styles.detailValue}>
+                {(d.applicants || []).length
+                  ? d.applicants.map(uid => (
+                      <span
+                        key={uid}
+                        style={{ color: '#14b8a6', cursor: 'pointer', textDecoration: 'underline', marginRight: 8 }}
+                        onClick={() => setShowProfileUid(uid)}
+                      >
+                        {uid}
+                      </span>
+                    ))
+                  : 'None'}
+              </div>
               <div className={styles.detailLabel}>Assigned To</div>
-              <div className={styles.detailValue}>{d.assignedTo || 'None'}</div>
+              <div className={styles.detailValue}>
+                {d.assignedTo ? (
+                  <span
+                    style={{ color: '#14b8a6', cursor: 'pointer', textDecoration: 'underline' }}
+                    onClick={() => setShowProfileUid(d.assignedTo)}
+                  >
+                    {d.assignedTo}
+                  </span>
+                ) : 'None'}
+              </div>
               {d.submission && <>
                 <div className={styles.detailLabel}>Submission</div>
                 <div className={styles.detailValue}>{d.submission.text}</div>
@@ -275,7 +294,9 @@ export default function Dashboard() {
       </div>
       {loading ? <Loader label="Loading dashboard data..." /> : content}
       {applicantsModal}
+      {applicantProfileModal}
       {detailModal}
+      <ProfileModal open={!!showProfileUid} uid={showProfileUid} onClose={() => setShowProfileUid(null)} />
     </div>
   );
 } 

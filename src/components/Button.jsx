@@ -4,7 +4,7 @@ import styles from './Button.module.css';
 export default function Button({ children, loading, className = '', ...props }) {
   return (
     <button
-      className={`${styles.glow} ${className}`}
+      className={`${styles.button} ${className}`}
       disabled={loading || props.disabled}
       {...props}
     >

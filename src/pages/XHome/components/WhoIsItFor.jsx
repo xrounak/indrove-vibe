@@ -13,13 +13,13 @@ export default function WhoIsItFor() {
           <span className={styles.icon}>🧑‍💼</span>
           <h3 className={styles.title}>For Clients</h3>
           <p className={styles.desc}>Find talented students to help with your projects, tasks, and more.</p>
-          <button className={styles.ctaBtnPrimary} onClick={()=> navigate("/HireRoutes")}>Post a Task</button>
+          <button className={styles.ctaBtnPrimary} onClick={()=> navigate("/feed/tasks")}>Post a Task</button>
         </div>
         <div className={styles.card}>
           <span className={styles.icon}>🎓</span>
           <h3 className={styles.title}>For Students</h3>
           <p className={styles.desc}>Earn money, gain experience, and build your portfolio while studying.</p>
-          <button className={styles.ctaBtnSecondary} onClick={()=> navigate("/WorkRoutes")}>Start Earning</button>
+          <button className={styles.ctaBtnSecondary} onClick={()=> navigate("/feed/freelancers")}>Start Earning</button>
         </div>
       </div>
     </section>

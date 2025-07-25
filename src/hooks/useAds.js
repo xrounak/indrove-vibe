@@ -65,7 +65,7 @@ export default function useAds() {
     error,
     loadAds,
     create,
-    edit,
-    remove
+    editAd: edit,
+    removeAd: remove
   };
 } 

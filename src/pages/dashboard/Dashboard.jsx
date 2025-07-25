@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Dashboard.module.css';
 import { useAuth } from '../../context/AuthContext';
 import useTasks from '../../hooks/useTasks';
-import { fetchAds, editAd, deleteAd } from '../../services/adService';
+//import { fetchAds, editAd, deleteAd } from '../../services/adService';//
 import Card from '../../components/Card';
 import PostedTasks from './PostedTasks/PostedTasks';
 import Applications from './Applications/Applications';
@@ -74,7 +74,7 @@ export default function Dashboard() {
     loadAds,
     create,
     editAd,
-    deleteAd
+    removeAd
   } = useAds();
   const [tab, setTab] = useState('posted');
   // const [ads, setAds] = useState([]);
@@ -92,7 +92,7 @@ export default function Dashboard() {
     if (!user) return;
     loadAllTasks();
     loadAds();
-  }, [user, loadAllTasks, loadAds]);
+  }, [user, loadAllTasks]);
 
   const handleAssign = async (taskId, freelancerUid) => {
     setAssigning(freelancerUid);
@@ -133,14 +133,12 @@ export default function Dashboard() {
     loadAllTasks();
   };
   const handleEditAd = async (adId, updates) => {
-    await editAd(adId, updates);
-    const allAds = await fetchAds(); // Assuming fetchAds is part of adService
-    setAds(allAds);
+    await editAd(adId, updates);    
+    loadAds(); 
   };
   const handleDeleteAd = async (adId) => {
-    await deleteAd(adId);
-    const allAds = await fetchAds(); // Assuming fetchAds is part of adService
-    setAds(allAds);
+    await removeAd(adId);
+    loadAds();
   };
 
   if (!user) return <div className={styles.dashboardRoot}>Please log in.</div>;

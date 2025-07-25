@@ -1,9 +1,10 @@
 // Navbar.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import logo from "../assets/indrove.svg";
 import { useAuth } from "../context/AuthContext";
+import { getUserData } from "../services/authService";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,8 +13,20 @@ export default function Navbar() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
 
-  const { user, userData } = useAuth();
-  const {email,name,avatarURL} = userData;
+  const { user } = useAuth();
+  // const {email,name,avatarURL} = userData;
+
+  const [userData, setUserData] = useState(null);
+  const [avatarURL, setAvatarURL] = useState(null);
+
+  useEffect( () => {
+    if (user) {
+      getUserData(user.uid).then(data => {
+        setUserData(data);
+        setAvatarURL(data.avatarURL);
+      });
+    }
+  }, [user]);
 
 
   return (

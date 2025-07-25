@@ -1,5 +1,5 @@
 import { app } from './firebase';
-import { getFirestore, collection, getDocs, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, addDoc, serverTimestamp, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 const db = getFirestore(app);
 
@@ -26,5 +26,5 @@ export async function editAd(adId, updates) {
 
 export async function deleteAd(adId) {
   const adRef = doc(getFirestore(app), 'ads', adId);
-  await adRef.delete();
+  await deleteDoc(adRef);
 } 

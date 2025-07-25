@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./About.module.css";
-import Contact from "../../components/contact";
+import Contact from "../../components/Contact";
 
 export default function About() {
   const navigate = useNavigate();

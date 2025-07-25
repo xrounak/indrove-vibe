@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import Button from '../../components/Button';
+// import Button from '../../components/Button';
 
 export default function Signup({ onFlip }) {
   const { register, loading } = useAuth();
@@ -48,7 +48,7 @@ export default function Signup({ onFlip }) {
           required
         />
         {error && <div className="text-red-400 text-sm text-center">{error}</div>}
-        <Button type="submit" loading={loading} className="w-full">Sign Up</Button>
+        <button type="submit" loading={loading} className="w-full">Sign Up</button>
       </form>
       <div className="text-center text-sm mt-2 text-text">
         Already have an account?{' '}

@@ -1,0 +1,341 @@
+.whoIsItFor {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  color: #b5b5b5;
+  padding: 4rem 1rem;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.whoIsItFor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heading {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 3rem;
+  color: white;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.cardsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  background: rgba(30, 41, 59, 0.95);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #14b8a6, #2563eb, #8b5cf6);
+  opacity: 0.8;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transition: left 0.6s;
+}
+
+.card:hover::after {
+  left: 100%;
+}
+
+.card:hover {
+  box-shadow: 0 16px 64px rgba(20, 184, 166, 0.25);
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(20, 184, 166, 0.4);
+}
+
+.icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 8px rgba(20, 184, 166, 0.3));
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #14b8a6;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.01em;
+}
+
+.desc {
+  color: #cbd5e1;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+  max-width: 400px;
+}
+
+.ctaBtnPrimary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.ctaBtnPrimary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.ctaBtnPrimary:hover::before {
+  left: 100%;
+}
+
+.ctaBtnPrimary:hover {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.4);
+}
+
+.ctaBtnSecondary {
+  background: transparent;
+  color: #14b8a6;
+  border: 2px solid rgba(20, 184, 166, 0.5);
+  border-radius: 12px;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.ctaBtnSecondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.ctaBtnSecondary:hover::before {
+  left: 100%;
+}
+
+.ctaBtnSecondary:hover {
+  background: rgba(20, 184, 166, 0.1);
+  border-color: rgba(20, 184, 166, 0.8);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.3);
+}
+
+/* Desktop - 2 columns side by side */
+@media (min-width: 1024px) {
+  .cardsGroup {
+    flex-direction: row;
+    gap: 3rem;
+  }
+  
+  .card {
+    padding: 3.5rem 2.5rem;
+  }
+  
+  .icon {
+    font-size: 4rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .desc {
+    font-size: 1.2rem;
+  }
+  
+  .ctaBtnPrimary,
+  .ctaBtnSecondary {
+    padding: 1.25rem 3rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Tablet Responsive */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .whoIsItFor {
+    padding: 3rem 1rem;
+  }
+  
+  .cardsGroup {
+    gap: 2rem;
+  }
+  
+  .card {
+    padding: 2.5rem 2rem;
+  }
+  
+  .icon {
+    font-size: 3rem;
+  }
+  
+  .title {
+    font-size: 1.3rem;
+  }
+  
+  .desc {
+    font-size: 1rem;
+  }
+  
+  .ctaBtnPrimary,
+  .ctaBtnSecondary {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 767px) {
+  .whoIsItFor {
+    padding: 2.5rem 1rem;
+  }
+  
+  .heading {
+    margin-bottom: 2rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+  }
+  
+  .cardsGroup {
+    gap: 2rem;
+  }
+  
+  .card {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .icon {
+    font-size: 3rem;
+  }
+  
+  .title {
+    font-size: 1.2rem;
+  }
+  
+  .desc {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .ctaBtnPrimary,
+  .ctaBtnSecondary {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .card {
+    backdrop-filter: blur(20px);
+  }
+  
+  .whoIsItFor::before {
+    background: 
+      radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  
+  .card::after {
+    display: none;
+  }
+  
+  .ctaBtnPrimary,
+  .ctaBtnSecondary {
+    transition: none;
+  }
+  
+  .ctaBtnPrimary::before,
+  .ctaBtnSecondary::before {
+    display: none;
+  }
+} 

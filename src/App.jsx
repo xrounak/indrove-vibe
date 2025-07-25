@@ -1,14 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
-import Home from './pages/home';
-import Auth from './pages/auth';
+import Home from './pages/XHome/Home';
+import Auth from './pages/Xauth/Auth';
 import Profile from './pages/profile';
 import TaskFeed from './pages/feed/tasks';
 import FreelancerFeed from './pages/feed/freelancers';
 import Dashboard from './pages/dashboard';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ReportBugButton from './components/ReportBugButton';
+import About from './pages/about/About';
 
 function Placeholder({ label }) {
   return <div className="text-center text-2xl text-primary mt-32">{label} (Coming Soon)</div>;
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/feed/freelancers" element={<FreelancerFeed />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<Navigate to="/home" />} />
           </Routes>
         </MainLayout>

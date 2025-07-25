@@ -77,3 +77,10 @@ export async function updateUserProfileInFirestore(uid, data) {
   const userRef = doc(db, 'users', uid);
   await updateDoc(userRef, { ...data, updatedAt: new Date() });
 } 
+
+export const getUserData = async (uid) => {
+  const db = getFirestore(app);
+  const docRef = doc(db, "users", uid);
+  const snap = await getDoc(docRef);
+  return snap.exists() ? snap.data() : null;
+};

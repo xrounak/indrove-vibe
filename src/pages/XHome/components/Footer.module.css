@@ -1,0 +1,152 @@
+.footer {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  color: #b5b5b5;
+  padding: 3rem 1rem 2rem 1rem;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.linksGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.socialGroup {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.link {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  will-change: transform;
+}
+
+.link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #14b8a6, #2563eb);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+}
+
+.link:hover {
+  color: #14b8a6;
+  transform: translateY(-2px);
+}
+
+.link:hover::before {
+  width: 80%;
+}
+
+.branding {
+  font-size: 1rem;
+  color: #94a3b8;
+  margin-top: 1rem;
+  position: relative;
+  z-index: 1;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .footer {
+    padding: 2.5rem 1rem 1.5rem 1rem;
+  }
+  
+  .linksGroup {
+    gap: 2rem;
+  }
+  
+  .link {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 1rem 1rem 1rem;
+  }
+  
+  .linksGroup {
+    gap: 1.5rem;
+    flex-direction: row;
+    width: 100%
+  }
+  
+  .socialGroup {
+    gap: 1.5rem;
+  }
+  
+  .link {
+    font-size: 0.95rem;
+    padding: 0.25rem 0.75rem;
+    width: 40%
+  }
+  
+  .branding {
+    font-size: 0.9rem;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .footer::before {
+    background: 
+      radial-gradient(circle at 30% 20%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+  
+  .link::before {
+    display: none;
+  }
+} 

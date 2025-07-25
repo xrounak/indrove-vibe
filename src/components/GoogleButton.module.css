@@ -1,0 +1,37 @@
+.googleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 320px;
+  padding: 0.7rem;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.googleBtn:hover {
+  background-color: #2a2a2a;
+}
+
+.googleIcon {
+  font-size: 1.2rem;
+}
+
+/* Responsive - optional, aligns with your existing media query */
+@media (max-width: 480px) {
+  .googleBtn {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+
+  .googleIcon {
+    font-size: 1.1rem;
+  }
+}

@@ -12,6 +12,7 @@ import Loader from '../../components/Loader';
 import ApplicantsModal from '../../components/Modal/ApplicantsModal';
 import ProfileModal from '../../components/Modal/ProfileModal';
 import ConfirmModal from '../../components/Modal/ConfirmModal';
+import useAds from '../../hooks/useAds';
 
 const TABS = [
   { key: 'posted', label: 'My Posted Tasks' },
@@ -66,10 +67,17 @@ export default function Dashboard() {
     markCompleted,
     addFeedback,
     edit,
-    remove
+    remove,
   } = useTasks();
+  const {
+    ads,
+    loadAds,
+    create,
+    editAd,
+    deleteAd
+  } = useAds();
   const [tab, setTab] = useState('posted');
-  const [ads, setAds] = useState([]);
+  // const [ads, setAds] = useState([]);
   const [showApplicants, setShowApplicants] = useState(null); // taskId or null
   const [assigning, setAssigning] = useState('');
   const [submitting, setSubmitting] = useState('');
@@ -83,7 +91,8 @@ export default function Dashboard() {
   useEffect(() => {
     if (!user) return;
     loadAllTasks();
-  }, [user, loadAllTasks]);
+    loadAds();
+  }, [user, loadAllTasks, loadAds]);
 
   const handleAssign = async (taskId, freelancerUid) => {
     setAssigning(freelancerUid);
